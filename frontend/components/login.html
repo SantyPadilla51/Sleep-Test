@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="min-vh-100 d-flex align-items-center justify-content-center bg-light bg-gradient"
+    style="font-family: 'Poppins', sans-serif"
+  >
+    <main class="container">
+      <div
+        class="card shadow-lg border-0 rounded-4 mx-auto p-4 p-md-5"
+        style="max-width: 400px"
+      >
+        <h2 class="text-center text-primary fw-bold mb-4">Iniciar Sesión</h2>
+
+        <form id="login">
+          <!-- Usuario -->
+          <div class="mb-3">
+            <label for="usuario" class="form-label">Usuario</label>
+            <input
+              type="text"
+              class="form-control"
+              id="usuario"
+              placeholder="Ingresá tu usuario"
+              required
+            />
+          </div>
+
+          <!-- Contraseña -->
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="Ingresá tu contraseña"
+              required
+            />
+          </div>
+
+          <!-- Botón -->
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary fw-semibold py-2">
+              Ingresar
+            </button>
+          </div>
+
+          <!-- Enlace de registro -->
+          <p class="text-center mt-4 mb-0 text-secondary">
+            ¿No tenés cuenta?
+            <a href="#" class="text-decoration-none text-primary fw-semibold"
+              >Registrate</a
+            >
+          </p>
+        </form>
+      </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../functions/login.js"></script>
+  </body>
+</html>

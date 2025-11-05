@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/index.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <title>Test del Sueño</title>
+  </head>
+
+  <body>
+    <main class="p-4">
+      <div class="container">
+        <h2 class="text-center mb-4">📊 Dashboard Semanal</h2>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-center gap-3 mb-4">
+          <button class="btn btn-primary" id="btnSueno">
+            💤 Horas de Sueño
+          </button>
+          <button class="btn btn-success" id="btnEjercicio">
+            💪 Horas de Ejercicio
+          </button>
+          <button class="btn btn-warning" id="btnSocial">
+            🤝 Horas Sociales
+          </button>
+        </div>
+
+        <!-- Formularios -->
+        <div id="formularios" class="mb-4">
+          <form id="formSueno" class="card p-3 mb-3 d-none">
+            <h5>Registrar Horas de Sueño</h5>
+            <div class="mb-2">
+              <label for="suenoDia" class="form-label">Día</label>
+              <input
+                type="text"
+                id="suenoDia"
+                class="form-control"
+                placeholder="Ej: Lunes"
+                required
+              />
+            </div>
+            <div class="mb-2">
+              <label for="suenoHoras" class="form-label">Horas dormidas</label>
+              <input
+                type="number"
+                id="suenoHoras"
+                class="form-control"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Guardar</button>
+          </form>
+
+          <form id="formEjercicio" class="card p-3 mb-3 d-none">
+            <h5>Registrar Horas de Ejercicio</h5>
+            <div class="mb-2">
+              <label for="ejercicioDia" class="form-label">Día</label>
+              <input
+                type="text"
+                id="ejercicioDia"
+                class="form-control"
+                placeholder="Ej: Martes"
+                required
+              />
+            </div>
+            <div class="mb-2">
+              <label for="ejercicioHoras" class="form-label"
+                >Horas de ejercicio</label
+              >
+              <input
+                type="number"
+                id="ejercicioHoras"
+                class="form-control"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-success w-100">Guardar</button>
+          </form>
+
+          <form id="formSocial" class="card p-3 mb-3 d-none">
+            <h5>Registrar Horas Sociales</h5>
+            <div class="mb-2">
+              <label for="socialDia" class="form-label">Día</label>
+              <input
+                type="text"
+                id="socialDia"
+                class="form-control"
+                placeholder="Ej: Viernes"
+                required
+              />
+            </div>
+            <div class="mb-2">
+              <label for="socialHoras" class="form-label">Horas sociales</label>
+              <input
+                type="number"
+                id="socialHoras"
+                class="form-control"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-warning w-100">Guardar</button>
+          </form>
+        </div>
+
+        <!-- Lista de registros -->
+        <h4 class="text-center mb-3">📋 Registros Semanales</h4>
+        <ul id="listaRegistros" class="list-group mb-5"></ul>
+
+        <!-- Gráfico -->
+        <div id="grafico" class="card p-4">
+          <h5 class="text-center mb-3">Resumen semanal</h5>
+          <canvas id="graficoSemanal"></canvas>
+        </div>
+      </div>
+      <script src="../functions/index.js"></script>
+    </main>
+  </body>
+</html>
