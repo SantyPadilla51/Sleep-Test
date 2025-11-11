@@ -9,7 +9,7 @@ const SALT_ROUNDS = 10;
 // ✅ REGISTRO DE USUARIO
 // ========================================================
 const registrarUsuario = async (req, res) => {
-  const { nombre, email, contrasena, genero, edad } = req.body;
+  const { nombre, email, contrasena} = req.body;
   console.log("📥 DATOS RECIBIDOS:", req.body);
 
 
@@ -33,8 +33,6 @@ const registrarUsuario = async (req, res) => {
       nombre,
       email,
       contrasena: contrasenaHasheada,
-      genero,
-      edad
         });
 
     return res.status(201).json({
@@ -44,7 +42,7 @@ const registrarUsuario = async (req, res) => {
 
   } catch (error) {
     console.error("Error en registro:", error);
-    return res.status(500).json({ message: "Error en el servidor." });
+    return res.status(500).json({ message: error.message });
   }
 };
 

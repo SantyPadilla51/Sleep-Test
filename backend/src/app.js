@@ -20,7 +20,7 @@ app.use(express.static("public"));
 //app.use("/respuestas", respuestasRoutes);
 app.use("/usuarios", usuariosRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
   console.log(`✅ Servidor iniciado en puerto ${PORT}`);

@@ -1,14 +1,14 @@
-const usuario = document.getElementById("usuario");
+const nombre = document.getElementById("nombre");
 const email = document.getElementById("email");
-const password = document.getElementById("password");
+const contrasena = document.getElementById("contrasena");
 const confirmar = document.getElementById("confirmar");
 
 async function registrarUsuario(e) {
   e.preventDefault();
 
-  const user = usuario.value.trim();
+  const user = nombre.value.trim();
   const mail = email.value.trim();
-  const pass = password.value.trim();
+  const pass = contrasena.value.trim();
   const conf = confirmar.value.trim();
 
   if (!user || !mail || !pass || !conf) {
@@ -22,10 +22,10 @@ async function registrarUsuario(e) {
   }
 
   try {
-    const response = await fetch("http://localhost:3000/api/signup", {
+    const response = await fetch("http://localhost:8080/usuarios/registro", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ usuario: user, email: mail, password: pass }),
+      body: JSON.stringify({ nombre: user, email: mail, contrasena: pass }),
     });
 
     const data = await response.json();
