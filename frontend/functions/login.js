@@ -1,5 +1,5 @@
-const usuario = document.getElementById("usuario");
-const password = document.getElementById("password");
+const usuario = document.getElementById("email");
+const password = document.getElementById("contrasena");
 
 async function iniciarSesion(e) {
   e.preventDefault();
@@ -15,12 +15,12 @@ async function iniciarSesion(e) {
   }
 
   try {
-    const response = await fetch("http://localhost:3000/login", {
+    const response = await fetch("http://localhost:8080/usuarios/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ usuario: user, password: pass }),
+      body: JSON.stringify({ email: user, contrasena: pass }),
     });
 
     const data = await response.json();
@@ -36,7 +36,7 @@ async function iniciarSesion(e) {
     window.location.href = "/index.html";
   } catch (error) {
     console.error("Error:", error);
-    alert("Usuario o contraseña incorrectos ❌");
+    alert(error.message);
   }
 }
 

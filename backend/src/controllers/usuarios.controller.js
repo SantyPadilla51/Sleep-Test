@@ -10,7 +10,7 @@ const SALT_ROUNDS = 10;
 // ========================================================
 const registrarUsuario = async (req, res) => {
   const { nombre, email, contrasena} = req.body;
-  console.log("📥 DATOS RECIBIDOS:", req.body);
+  console.log("📥 DATOS RECIBIDOS:");
 
 
   try {
@@ -50,6 +50,7 @@ const registrarUsuario = async (req, res) => {
 // ✅ LOGIN DE USUARIO
 // ========================================================
 const loginUsuario = async (req, res) => {
+  console.log("JWT_SECRET:", process.env.JWT_SECRET);
   const { email, contrasena } = req.body;
 
   try {
@@ -76,7 +77,7 @@ const loginUsuario = async (req, res) => {
         email: usuario.email,
         nombre: usuario.nombre
       },
-      JWT_SECRET,
+      process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
 

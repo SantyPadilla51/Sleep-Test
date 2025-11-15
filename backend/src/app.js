@@ -8,12 +8,14 @@ const cors = require("cors");
 //const respuestasRoutes = require("./routes/respuestas.routes");
 const usuariosRoutes = require("./routes/usuarios.routes");
 
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
 app.use(express.static("public"));
+app.use(express.static("frontend"));
 
 //app.use("/admin", adminRoutes);
 //app.use("/preguntas", preguntasRoutes);

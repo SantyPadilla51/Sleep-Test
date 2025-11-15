@@ -33,7 +33,7 @@ async function registrarUsuario(e) {
     if (!response.ok) throw new Error(data.message || "Error al registrarse");
 
     alert("Cuenta creada con éxito ✅");
-    window.location.href = "/login.html";
+    window.location.href = "/frontend/components/login.html";
   } catch (error) {
     console.error("Error:", error);
     alert("No se pudo registrar el usuario ❌");
