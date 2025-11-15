@@ -7,7 +7,7 @@ const cors = require("cors");
 //const preguntasRoutes = require("./routes/preguntas.routes");
 //const respuestasRoutes = require("./routes/respuestas.routes");
 const usuariosRoutes = require("./routes/usuarios.routes");
-
+const diagnosticoRoutes = require("./routes/diagnostico.routes");
 
 const app = express();
 
@@ -21,6 +21,7 @@ app.use(express.static("frontend"));
 //app.use("/preguntas", preguntasRoutes);
 //app.use("/respuestas", respuestasRoutes);
 app.use("/usuarios", usuariosRoutes);
+app.use("/diagnostico", diagnosticoRoutes);
 
 const PORT = process.env.PORT || 8080;
 
