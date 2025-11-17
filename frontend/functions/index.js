@@ -39,17 +39,34 @@ btnSocial.addEventListener("click", () => {
 });
 
 // Función para actualizar lista y gráfico
-function agregarRegistro(tipo, dia, horas) {
-  const li = document.createElement("li");
-  li.classList.add("list-group-item");
-  li.textContent = `${dia}: ${horas}h de ${tipo}`;
-  lista.appendChild(li);
+async function agregarRegistro(tipo, dia, horas) {
 
-  // Guardar datos
-  if (!datos[tipo][dia]) datos[tipo][dia] = 0;
-  datos[tipo][dia] += Number(horas);
+  const tipoDeTabla = tipo
+  const descripcion1 = dia
+  const descripcion2 = horas
 
-  actualizarGrafico();
+   if (!tipoDeTabla || !descripcion1 || !descripcion1) {
+    alert("Por favor, completá todos los campos.");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:8080/diagnostico/registro", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tipoDeTabla,descripcion1,descripcion2 }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Error en la carga de datos");
+    alert("cargada con éxito ✅");
+  } catch (error) {
+    console.error("Error:", error);
+    alert("No se pudo crear ❌");
+  }
+
+  
+  //actualizarGrafico();
 }
 
 // Manejar formularios
@@ -70,6 +87,13 @@ formSocial.addEventListener("submit", (e) => {
   agregarRegistro("social", socialDia.value, socialHoras.value);
   formSocial.reset();
 });
+
+
+
+
+
+
+
 
 // Gráfico con Chart.js
 const ctx = document.getElementById("graficoSemanal");
@@ -113,11 +137,11 @@ const grafico = new Chart(ctx, {
 
 // Actualizar gráfico según datos
 function actualizarGrafico() {
-  const dias = grafico.data.labels;
+  // const dias = grafico.data.labels;
 
-  grafico.data.datasets[0].data = dias.map((d) => datos.sueno[d] || 0);
-  grafico.data.datasets[1].data = dias.map((d) => datos.ejercicio[d] || 0);
-  grafico.data.datasets[2].data = dias.map((d) => datos.social[d] || 0);
+  // grafico.data.datasets[0].data = dias.map((d) => datos.sueno[d] || 0);
+  // grafico.data.datasets[1].data = dias.map((d) => datos.ejercicio[d] || 0);
+  // grafico.data.datasets[2].data = dias.map((d) => datos.social[d] || 0);
 
-  grafico.update();
+  // grafico.update();
 }

@@ -1,11 +1,11 @@
 const pool = require("./mysql");
 
 const Diagnostico = {
-  async crear({ nombre, email, contrasena}) {
+  async crear({ tipoDeTabla, descripcion1, descripcion2}) {
     const [result] = await pool.query(
-      `INSERT INTO usuarios (nombre, email, contrasena)
+      `INSERT INTO diagnostico (tipoDeTabla, descripcion1, descripcion2)
        VALUES (?, ?, ?)`,
-      [nombre, email, contrasena]
+      [tipoDeTabla, descripcion1, descripcion2]
     );
 
     return result.insertId;

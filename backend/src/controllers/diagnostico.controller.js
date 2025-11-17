@@ -1,43 +1,29 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const Usuario = require("../models/Usuario"); // ✅ modelo real (CommonJS)
+const Diagnostico = require("../models/diagnostico"); // ✅ modelo real (CommonJS)
 
-const JWT_SECRET = process.env.JWT_SECRET;
-const SALT_ROUNDS = 10;
 
 // ========================================================
-// ✅ REGISTRO DE USUARIO
+// ✅ carga de Diagnostico
 // ========================================================
-const registrarUsuario = async (req, res) => {
-  const { nombre, email, contrasena} = req.body;
+const registrarDiagnostico = async (req, res) => {
+  const { tipoDeTabla, descripcion1, descripcion2} = req.body;
   console.log("📥 DATOS RECIBIDOS:");
 
 
   try {
     // Validación básica
-    if (!nombre || !email || !contrasena) {
+    if (!tipoDeTabla || !descripcion1 || !descripcion2) {
       return res.status(400).json({ message: "Faltan datos obligatorios." });
     }
 
-    // Verificar email duplicado
-    const existente = await Usuario.obtenerPorEmail(email);
-    if (existente) {
-      return res.status(409).json({ message: "El correo ya está registrado." });
-    }
-
-    // Hash contraseña
-    const contrasenaHasheada = await bcrypt.hash(contrasena, SALT_ROUNDS);
-
-    // Crear usuario
-    const id = await Usuario.crear({
-      nombre,
-      email,
-      contrasena: contrasenaHasheada,
+    // Crear Diagnostico
+    const id = await Diagnostico.crear({
+      tipoDeTabla,
+      descripcion1,
+      descripcion2,
         });
 
     return res.status(201).json({
-      message: "Usuario registrado con éxito",
-      userId: id
+      message: "Diagnostico registrado con éxito"
     });
 
   } catch (error) {
@@ -46,54 +32,8 @@ const registrarUsuario = async (req, res) => {
   }
 };
 
-// ========================================================
-// ✅ LOGIN DE USUARIO
-// ========================================================
-const loginUsuario = async (req, res) => {
-  console.log("JWT_SECRET:", process.env.JWT_SECRET);
-  const { email, contrasena } = req.body;
-
-  try {
-    if (!email || !contrasena) {
-      return res.status(400).json({ message: "Datos incompletos." });
-    }
-
-    // Buscar usuario
-    const usuario = await Usuario.obtenerPorEmail(email);
-    if (!usuario) {
-      return res.status(401).json({ message: "Credenciales inválidas." });
-    }
-
-    // Comparar contraseñas
-    const coincide = await bcrypt.compare(contrasena, usuario.contrasena);
-    if (!coincide) {
-      return res.status(401).json({ message: "Credenciales inválidas." });
-    }
-
-    // Generar token
-    const token = jwt.sign(
-      {
-        id: usuario.id_usuario,
-        email: usuario.email,
-        nombre: usuario.nombre
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "24h" }
-    );
-
-    return res.json({
-      message: "Login exitoso",
-      token
-    });
-
-  } catch (error) {
-    console.error("Error en login:", error);
-    return res.status(500).json({ message: "Error en el servidor." });
-  }
-};
 
 
 module.exports = {
-  registrarUsuario,
-  loginUsuario
+  registrarDiagnostico,
 };
