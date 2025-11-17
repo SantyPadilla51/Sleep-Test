@@ -11,6 +11,13 @@ const Diagnostico = {
     return result.insertId;
   },
 
+  async obtener() {
+  const [rows] = await pool.query(
+    `SELECT * FROM diagnostico`
+  );
+  return rows;
+}
+
 };
 
 module.exports = Diagnostico;

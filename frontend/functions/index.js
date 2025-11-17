@@ -38,14 +38,18 @@ btnSocial.addEventListener("click", () => {
   formSocial.classList.remove("d-none");
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    actualizarTabla()
+});
+
 // Función para actualizar lista y gráfico
 async function agregarRegistro(tipo, dia, horas) {
 
   const tipoDeTabla = tipo
-  const descripcion1 = dia
+  const descripcion1 = capitalize(dia)
   const descripcion2 = horas
 
-   if (!tipoDeTabla || !descripcion1 || !descripcion1) {
+   if (!tipoDeTabla || !descripcion1 || !descripcion2) {
     alert("Por favor, completá todos los campos.");
     return;
   }
@@ -65,9 +69,65 @@ async function agregarRegistro(tipo, dia, horas) {
     alert("No se pudo crear ❌");
   }
 
+  actualizarTabla()
   
-  //actualizarGrafico();
 }
+
+
+async function actualizarTabla() {
+  try {
+    const response = await fetch("http://localhost:8080/diagnostico/obtener");
+    
+    if (!response.ok) {
+      throw new Error("Error al obtener los datos");
+    }
+
+    const data = await response.json(); // <-- la data del backend
+
+    // ---------------------------
+    // 1. MOSTRAR DATOS EN LISTA
+    // ---------------------------
+    lista.innerHTML = "";
+
+    data.forEach((item) => {
+      const li = document.createElement("li");
+      li.classList.add("list-group-item");
+      li.textContent = `${item.tipoDeTabla}: ${item.descripcion2}h de ${item.descripcion1}`;
+      lista.appendChild(li);
+    });
+
+    console.log("Registros cargados correctamente");
+
+    // ---------------------------
+    // 2. PREPARAR DATOS PARA EL GRAFICO
+    // ---------------------------
+    const datos = {
+      sueño: {},
+      ejercicio: {},
+      social: {},
+    };
+
+    data.forEach((item) => {
+      const tipo = item.tipoDeTabla.toLowerCase();  // sueño / ejercicio / social
+      const dia = item.descripcion1;                // lunes, martes…
+      const horas = Number(item.descripcion2);      // cantidad
+
+      if (!datos[tipo]) datos[tipo] = {};
+      datos[tipo][dia] = horas;
+    });
+
+    // ---------------------------
+    // 3. ACTUALIZAR GRAFICO
+    // ---------------------------
+    actualizarGrafico(datos);
+
+  } catch (error) {
+    console.error("Error:", error);
+    alert("No se pudieron cargar los datos ❌");
+  }
+}
+
+
 
 // Manejar formularios
 formSueno.addEventListener("submit", (e) => {
@@ -87,10 +147,6 @@ formSocial.addEventListener("submit", (e) => {
   agregarRegistro("social", socialDia.value, socialHoras.value);
   formSocial.reset();
 });
-
-
-
-
 
 
 
@@ -135,13 +191,39 @@ const grafico = new Chart(ctx, {
   },
 });
 
+
+
+function capitalize(texto) {
+  return texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase();
+}
+
+
+
+
+
+
+
+
+
+
 // Actualizar gráfico según datos
-function actualizarGrafico() {
-  // const dias = grafico.data.labels;
+function actualizarGrafico(datos) {
+  const dias = grafico.data.labels;
 
-  // grafico.data.datasets[0].data = dias.map((d) => datos.sueno[d] || 0);
-  // grafico.data.datasets[1].data = dias.map((d) => datos.ejercicio[d] || 0);
-  // grafico.data.datasets[2].data = dias.map((d) => datos.social[d] || 0);
+  // Sueño
+  grafico.data.datasets[0].data = dias.map(
+    (d) => datos["sueño"][d] || datos["sueno"]?.[d] || 0
+  );
 
-  // grafico.update();
+  // Ejercicio
+  grafico.data.datasets[1].data = dias.map(
+    (d) => datos["ejercicio"][d] || 0
+  );
+
+  // Social
+  grafico.data.datasets[2].data = dias.map(
+    (d) => datos["social"][d] || 0
+  );
+
+  grafico.update();
 }
