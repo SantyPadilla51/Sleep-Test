@@ -4,12 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sing Up</title>
-    <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <!-- Fuente moderna -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
@@ -23,7 +21,6 @@
       <h2 class="text-center text-primary fw-bold mb-4">Crear cuenta</h2>
 
       <form id="formRegistro">
-        <!-- Nombre de usuario -->
         <div class="mb-3">
           <label for="usuario" class="form-label">Nombre de usuario</label>
           <input
@@ -35,7 +32,6 @@
           />
         </div>
 
-        <!-- Email -->
         <div class="mb-3">
           <label for="email" class="form-label">Correo electrónico</label>
           <input
@@ -47,7 +43,30 @@
           />
         </div>
 
-        <!-- Contraseña -->
+         <div class="mb-3">
+          <label for="edad" class="form-label">Edad</label>
+          <input
+            type="number"
+            id="edad"
+            min="0"
+            max="100"
+            class="form-control"
+            placeholder="Ingresá una edad"
+            required
+          />
+        </div>
+
+        <div class="p-2 bg-secondary mt-4 mb-3 d-flex justify-content-between rounded-1">
+          <label for="genero" class="form-label text-light">Genero</label>
+          <select name="genero" id="genero">
+            <option value="mujer">Mujer</option>
+            <option value="hombre">Hombre</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+
+        
+
         <div class="mb-3">
           <label for="password" class="form-label">Contraseña</label>
           <input
@@ -59,7 +78,6 @@
           />
         </div>
 
-        <!-- Confirmar contraseña -->
         <div class="mb-4">
           <label for="confirmar" class="form-label">Confirmar contraseña</label>
           <input
@@ -71,14 +89,12 @@
           />
         </div>
 
-        <!-- Botón -->
         <div class="d-grid">
           <button type="submit" class="btn btn-primary fw-semibold py-2">
             Registrarse
           </button>
         </div>
 
-        <!-- Enlace de login -->
         <p class="text-center mt-4 mb-0 text-secondary">
           ¿Ya tenés cuenta?
           <a href="login.html" class="text-decoration-none text-primary fw-semibold">Iniciá sesión</a>

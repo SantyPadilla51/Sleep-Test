@@ -15,15 +15,17 @@ async function iniciarSesion(e) {
   }
 
   try {
-    const response = await fetch("http://localhost:3000/api/login", {
+    const response = await fetch("http://localhost:3000/usuarios/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ usuario: user, password: pass }),
+      body: JSON.stringify({ email: user, contrasena: pass }),
     });
 
     const data = await response.json();
+
+    console.log(data);
 
     if (!response.ok) {
       throw new Error(data.message || "Error al iniciar sesión");
@@ -33,7 +35,8 @@ async function iniciarSesion(e) {
 
     // Guardar token o redirigir al dashboard
     localStorage.setItem("token", data.token);
-    window.location.href = "/index.html";
+    window.location.href =
+      "http://127.0.0.1:5500/frontend/components/dashboard.html";
   } catch (error) {
     console.error("Error:", error);
     alert("Usuario o contraseña incorrectos ❌");
