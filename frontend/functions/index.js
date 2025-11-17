@@ -39,7 +39,7 @@ btnSocial.addEventListener("click", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    actualizarTabla()
+  actualizarTabla()
 });
 
 // Función para actualizar lista y gráfico
@@ -49,7 +49,7 @@ async function agregarRegistro(tipo, dia, horas) {
   const descripcion1 = capitalize(dia)
   const descripcion2 = horas
 
-   if (!tipoDeTabla || !descripcion1 || !descripcion2) {
+  if (!tipoDeTabla || !descripcion1 || !descripcion2) {
     alert("Por favor, completá todos los campos.");
     return;
   }
@@ -58,7 +58,7 @@ async function agregarRegistro(tipo, dia, horas) {
     const response = await fetch("http://localhost:8080/diagnostico/registro", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tipoDeTabla,descripcion1,descripcion2 }),
+      body: JSON.stringify({ tipoDeTabla, descripcion1, descripcion2 }),
     });
 
     const data = await response.json();
@@ -70,54 +70,222 @@ async function agregarRegistro(tipo, dia, horas) {
   }
 
   actualizarTabla()
-  
+
 }
 
+
+// async function actualizarTabla() {
+
+
+//   try {
+//     const response = await fetch("http://localhost:8080/diagnostico/obtener");
+
+//     if (!response.ok) {
+//       throw new Error("Error al obtener los datos");
+//     }
+
+//     const data = await response.json(); // <-- la data del backend
+//     const datos = {
+//       sueño: {},
+//       ejercicio: {},
+//       social: {},
+//     };
+
+//     // ---------------------------
+//     // 1. MOSTRAR DATOS EN LISTA
+//     // ---------------------------
+//     lista.innerHTML = "";
+
+//     data.forEach((item) => {
+
+//       const tipo = item.tipoDeTabla.toLowerCase();  // sueño / ejercicio / social
+//       const dia = item.descripcion1;                // lunes, martes…
+//       const horas = Number(item.descripcion2);      // cantidad
+
+//       if (!datos[tipo]) datos[tipo] = {};
+//       datos[tipo][dia] = horas;
+
+
+//       const li = document.createElement("li");
+//       li.classList.add("list-group-item");
+
+//       const texto = document.createElement("span");
+//       texto.textContent = `${item.tipoDeTabla}: ${item.descripcion2}h de ${item.descripcion1}`;
+//       li.appendChild(texto);
+
+//       const btnEliminar = document.createElement("button");
+//       btnEliminar.textContent = "✖";
+//       btnEliminar.classList.add("btn", "btn-danger", "btn-sm");
+//       btnEliminar.style.float = "right";
+//       btnEliminar.addEventListener("click", async () => {
+//         const confirmar = confirm("¿Eliminar este registro?");
+//         if (!confirmar) return;
+
+//         try {
+//           // ⬅ backend: eliminar por ID
+//           await fetch(`http://localhost:8080/diagnostico/borrar/${item.id}`, {
+//             method: "DELETE"
+//           });
+
+//           actualizarGrafico(datos) // ← eliminar del DOM
+//           console.log("Registro eliminado");
+//         } catch (error) {
+//           console.error("Error al eliminar:", error);
+//         }
+//       });
+
+//       li.appendChild(btnEliminar);
+//       lista.appendChild(li);
+//     });
+
+//     console.log("Registros cargados correctamente");
+// -
+//     actualizarGrafico(datos);
+
+//   } catch (error) {
+//     console.error("Error:", error);
+//     alert("No se pudieron cargar los datos ❌");
+//   }
+// }
+
+
+
+
+
+// data.forEach((item) => {
+//   const li = document.createElement("li");
+//   li.classList.add("list-group-item");
+
+//   // texto
+//   const texto = document.createElement("span");
+//   texto.textContent = `${item.tipoDeTabla}: ${item.descripcion2}h de ${item.descripcion1}`;
+//   li.appendChild(texto);
+
+//   // botón X
+//   const btnEliminar = document.createElement("button");
+//   btnEliminar.textContent = "✖";
+//   btnEliminar.classList.add("btn", "btn-danger", "btn-sm");
+//   btnEliminar.style.float = "right";
+
+//   btnEliminar.addEventListener("click", async () => {
+//     const confirmar = confirm("¿Eliminar este registro?");
+//     if (!confirmar) return;
+
+//     try {
+//       // ⬅ backend: eliminar por ID
+//       await fetch(`http://localhost:8080/diagnostico/eliminar/${item.id}`, {
+//         method: "DELETE"
+//       });
+
+//       li.remove(); // ← eliminar del DOM
+//       console.log("Registro eliminado");
+//     } catch (error) {
+//       console.error("Error al eliminar:", error);
+//     }
+//   });
+
+//   li.appendChild(btnEliminar);
+//   lista.appendChild(li);
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Manejar formularios
 
 async function actualizarTabla() {
   try {
     const response = await fetch("http://localhost:8080/diagnostico/obtener");
-    
+
     if (!response.ok) {
       throw new Error("Error al obtener los datos");
     }
 
-    const data = await response.json(); // <-- la data del backend
+    const data = await response.json(); // datos desde el backend
 
-    // ---------------------------
-    // 1. MOSTRAR DATOS EN LISTA
-    // ---------------------------
-    lista.innerHTML = "";
-
-    data.forEach((item) => {
-      const li = document.createElement("li");
-      li.classList.add("list-group-item");
-      li.textContent = `${item.tipoDeTabla}: ${item.descripcion2}h de ${item.descripcion1}`;
-      lista.appendChild(li);
-    });
-
-    console.log("Registros cargados correctamente");
-
-    // ---------------------------
-    // 2. PREPARAR DATOS PARA EL GRAFICO
-    // ---------------------------
+    // Datos para el gráfico
     const datos = {
       sueño: {},
       ejercicio: {},
       social: {},
     };
 
+    // ---------------------------
+    // 1. MOSTRAR DATOS EN LISTA
+    // ---------------------------
+    lista.innerHTML = ""; // vaciar lista antes de cargar
+
     data.forEach((item) => {
       const tipo = item.tipoDeTabla.toLowerCase();  // sueño / ejercicio / social
       const dia = item.descripcion1;                // lunes, martes…
-      const horas = Number(item.descripcion2);      // cantidad
+      const horas = Number(item.descripcion2);      // número
 
+      // Preparar datos para el gráfico
       if (!datos[tipo]) datos[tipo] = {};
       datos[tipo][dia] = horas;
+
+      // ---------------------------
+      // CREACIÓN DEL <li>
+      // ---------------------------
+      const li = document.createElement("li");
+      li.classList.add("list-group-item");
+
+      const texto = document.createElement("span");
+      texto.textContent = `${item.tipoDeTabla}: ${item.descripcion2}h de ${item.descripcion1}`;
+      li.appendChild(texto);
+
+      // ---------------------------
+      // BOTÓN ELIMINAR
+      // ---------------------------
+      const btnEliminar = document.createElement("button");
+      btnEliminar.textContent = "✖";
+      btnEliminar.classList.add("btn", "btn-danger", "btn-sm");
+      btnEliminar.style.float = "right";
+
+      btnEliminar.addEventListener("click", async () => {
+        const confirmar = confirm("¿Eliminar este registro?");
+        if (!confirmar) return;
+
+        try {
+          const resp = await fetch(
+            `http://localhost:8080/diagnostico/borrar/${item.id}`,
+            { method: "DELETE" }
+          );
+
+          if (!resp.ok) throw new Error("No se pudo eliminar");
+
+          console.log("Registro eliminado");
+
+          // RE-CARGAR lista + gráfico con datos reales
+          actualizarTabla();
+
+        } catch (error) {
+          console.error("Error al eliminar:", error);
+        }
+      });
+
+      li.appendChild(btnEliminar);
+      lista.appendChild(li);
     });
 
+    console.log("Registros cargados correctamente");
+
     // ---------------------------
-    // 3. ACTUALIZAR GRAFICO
+    // 2. ACTUALIZAR EL GRÁFICO
     // ---------------------------
     actualizarGrafico(datos);
 
@@ -128,8 +296,6 @@ async function actualizarTabla() {
 }
 
 
-
-// Manejar formularios
 formSueno.addEventListener("submit", (e) => {
   e.preventDefault();
   agregarRegistro("sueno", suenoDia.value, suenoHoras.value);
@@ -147,6 +313,9 @@ formSocial.addEventListener("submit", (e) => {
   agregarRegistro("social", socialDia.value, socialHoras.value);
   formSocial.reset();
 });
+
+
+
 
 
 

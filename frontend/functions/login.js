@@ -33,7 +33,7 @@ async function iniciarSesion(e) {
 
     // Guardar token o redirigir al dashboard
     localStorage.setItem("token", data.token);
-    window.location.href = "/index.html";
+    window.location.href = "/frontend/components/index.html";
   } catch (error) {
     console.error("Error:", error);
     alert(error.message);

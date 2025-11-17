@@ -40,9 +40,32 @@ const obtenerDiagnostico = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+const borrarDiagnostico = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id)
+
+    if (!id) {
+      return res.status(400).json({ message: "Falta el ID del diagnóstico." });
+    }
+
+    const eliminado = await Diagnostico.borrar(id);
+
+    if (!eliminado) {
+      return res.status(404).json({ message: "Registro no encontrado." });
+    }
+
+    return res.status(200).json({ message: "Diagnóstico eliminado correctamente." });
+
+  } catch (error) {
+    console.error("Error al eliminar:", error);
+    return res.status(500).json({ message: error.message });
+  }
+};
 
 
 module.exports = {
   registrarDiagnostico,
-  obtenerDiagnostico
+  obtenerDiagnostico,
+  borrarDiagnostico
 };
