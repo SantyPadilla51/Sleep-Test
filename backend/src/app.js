@@ -7,6 +7,7 @@ const cors = require("cors");
 //const preguntasRoutes = require("./routes/preguntas.routes");
 //const respuestasRoutes = require("./routes/respuestas.routes");
 const usuariosRoutes = require("./routes/usuarios.routes");
+const testRoutes = require("./routes/test.routes");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.static("public"));
 //app.use("/preguntas", preguntasRoutes);
 //app.use("/respuestas", respuestasRoutes);
 app.use("/usuarios", usuariosRoutes);
+app.use("tests", testRoutes);
 
 const PORT = process.env.PORT || 3000;
 

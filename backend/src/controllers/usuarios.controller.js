@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const Usuario = require("../models/Usuario"); // ✅ modelo real (CommonJS)
+const Usuario = require("../models/Usuario");
+require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const SALT_ROUNDS = 10;
@@ -11,7 +12,6 @@ const SALT_ROUNDS = 10;
 const registrarUsuario = async (req, res) => {
   const { nombre, email, contrasena, genero, edad } = req.body;
   console.log("📥 DATOS RECIBIDOS:", req.body);
-
 
   try {
     // Validación básica
@@ -34,14 +34,13 @@ const registrarUsuario = async (req, res) => {
       email,
       contrasena: contrasenaHasheada,
       genero,
-      edad
-        });
+      edad,
+    });
 
     return res.status(201).json({
       message: "Usuario registrado con éxito",
-      userId: id
+      userId: id,
     });
-
   } catch (error) {
     console.error("Error en registro:", error);
     return res.status(500).json({ message: "Error en el servidor." });
@@ -76,7 +75,7 @@ const loginUsuario = async (req, res) => {
       {
         id: usuario.id_usuario,
         email: usuario.email,
-        nombre: usuario.nombre
+        nombre: usuario.nombre,
       },
       JWT_SECRET,
       { expiresIn: "24h" }
@@ -84,17 +83,15 @@ const loginUsuario = async (req, res) => {
 
     return res.json({
       message: "Login exitoso",
-      token
+      token,
     });
-
   } catch (error) {
     console.error("Error en login:", error);
     return res.status(500).json({ message: "Error en el servidor." });
   }
 };
 
-
 module.exports = {
   registrarUsuario,
-  loginUsuario
+  loginUsuario,
 };
