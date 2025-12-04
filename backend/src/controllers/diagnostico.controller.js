@@ -63,9 +63,74 @@ const borrarDiagnostico = async (req, res) => {
   }
 };
 
+const obtenerUnDiagnostico = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ message: "Falta el ID del diagnóstico." });
+    }
+
+    // Buscar el registro por ID
+    const diagnostico = await Diagnostico.obtenerPorId(id);
+
+    if (!diagnostico) {
+      return res.status(404).json({ message: "Diagnóstico no encontrado." });
+    }
+
+    return res.status(200).json(diagnostico);
+
+  } catch (error) {
+    console.error("Error al obtener un diagnóstico:", error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const editarUnDiagnostico = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { tipoDeTabla, descripcion1, descripcion2 } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ message: "Falta el ID del diagnóstico." });
+    }
+
+    // Validar datos obligatorios
+    if (!tipoDeTabla || !descripcion1 || !descripcion2) {
+      return res.status(400).json({ message: "Faltan datos obligatorios para editar." });
+    }
+
+    // Verificar si existe
+    const existe = await Diagnostico.obtenerPorId(id);
+    if (!existe) {
+      return res.status(404).json({ message: "Diagnóstico no encontrado." });
+    }
+
+    // Editar registro
+    const actualizado = await Diagnostico.editar(id, {
+      tipoDeTabla,
+      descripcion1,
+      descripcion2
+    });
+
+    if (!actualizado) {
+      return res.status(500).json({ message: "No se pudo actualizar el diagnóstico." });
+    }
+
+    return res.status(200).json({ message: "Diagnóstico actualizado correctamente." });
+
+  } catch (error) {
+    console.error("Error al editar diagnóstico:", error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+
 
 module.exports = {
   registrarDiagnostico,
   obtenerDiagnostico,
-  borrarDiagnostico
+  borrarDiagnostico,
+  editarUnDiagnostico,
+  obtenerUnDiagnostico
 };
